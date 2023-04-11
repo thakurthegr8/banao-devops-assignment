@@ -1,18 +1,10 @@
-import http.server
-import socketserver
+from flask import Flask
 
-PORT = 8000
+app = Flask(__name__)
 
-class MyHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            self.wfile.write(b'<html><body><h1>Hello, world!</h1></body></html>')
-        else:
-            super().do_GET()
+@app.route("/")
+def hello():
+    return "Hello, World!"
 
-with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
-    print("serving at port", PORT)
-    httpd.serve_forever()
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0', port=80)
